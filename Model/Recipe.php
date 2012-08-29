@@ -11,8 +11,11 @@ App::uses('AppModel', 'Model');
  */
 class Recipe extends AppModel {
 
-	public function afterFind(array $results, boolean $primary = false) {
-		if(empty($results['Ingredient'])) {
+	public function afterFind($results = array(), $primary = false) {
+
+		$results = parent::afterFind($results, $primary);
+
+		if(!empty($results['Ingredient'])) {
 			$results['Recipe']['points'] = 0;
 			foreach($results['Ingredient'] As $ingredient) {
 				$protein = $ingredient['protein'];
@@ -20,7 +23,7 @@ class Recipe extends AppModel {
 				$fat = $ingredient['fat'];
 				$fiber = $ingredient['fiber'];
 
-				$results['Recipe']['points'] += 
+				$results['Recipe']['pro_points'] += max( round( ( ( 16 * $protein ) + ( 19 * $carbs ) + ( 45 * $fat ) + ( 14 * $fiber ) ) / 175), 0 );
 			}
 		}
 
