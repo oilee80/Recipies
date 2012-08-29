@@ -1,4 +1,4 @@
-config/database.php
+Config/database.php
 tmp/cache/models/*
 tmp/cache/persistent/*
 tmp/cache/views/*
@@ -6,6 +6,7 @@ tmp/logs/*
 tmp/sessions/*
 tmp/tests/*
 config/database.php
+nbproject
 !empty
 .*
 !.htaccess

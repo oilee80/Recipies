@@ -30,7 +30,6 @@ App::uses('AppController', 'Controller');
  * @link http://book.cakephp.org/2.0/en/controllers/pages-controller.html
  */
 class PagesController extends AppController {
-
 /**
  * Controller name
  *
@@ -59,6 +58,7 @@ class PagesController extends AppController {
  * @return void
  */
 	public function display() {
+
 		$path = func_get_args();
 
 		$count = count($path);

@@ -29,14 +29,18 @@
  * a directory layout other than the way it is distributed.
  * When using custom settings be sure to use the DS and do not add a trailing DS.
  */
-
 /**
  * The full path to the directory which holds "app", WITHOUT a trailing DS.
  *
  */
 	if (!defined('ROOT')) {
-		define('ROOT', dirname(dirname(dirname(__FILE__))) . DS . 'cake' . DS . '2.1');
+		define('ROOT', dirname(dirname(dirname(__FILE__))));
 	}
+
+	if(!defined('CAKE_CORE_INCLUDE_PATH')) {
+		define('CAKE_CORE_INCLUDE_PATH', ROOT . DS . 'cake' . DS . '2.1' . DS . 'lib');
+	}
+
 /**
  * The actual directory name for the "app".
  *
