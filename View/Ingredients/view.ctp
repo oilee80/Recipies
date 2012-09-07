@@ -6,9 +6,9 @@
 			<?php echo h($ingredient['Ingredient']['id']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Ingredient'); ?></dt>
+		<dt><?php echo __('Name'); ?></dt>
 		<dd>
-			<?php echo h($ingredient['Ingredient']['ingredient']); ?>
+			<?php echo h($ingredient['Ingredient']['name']); ?>
 			&nbsp;
 		</dd>
 		<dt><?php echo __('Protein'); ?></dt>

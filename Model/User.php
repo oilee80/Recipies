@@ -6,6 +6,14 @@ App::uses('AppModel', 'Model');
  * @property Recipe $Recipe
  */
 class User extends AppModel {
+
+	public $displayField = 'full_user';
+
+	public $virtualFields = array(
+		'full_user' => 'CONCAT(User.forename, " ", User.surname, " (", User.email_address, ")")',
+		'full_name' => 'CONCAT(User.forename, " ", User.surname)'
+	);
+
 /**
  * Validation rules
  *

@@ -14,7 +14,7 @@ class RecipesController extends AppController {
  * @return void
  */
 	public function index() {
-		$this->Recipe->recursive = 0;
+		$this->Recipe->recursive = 1;
 		$this->set('recipes', $this->paginate());
 	}
 
@@ -48,8 +48,10 @@ class RecipesController extends AppController {
 			}
 		}
 		$users = $this->Recipe->User->find('list');
-		$recipes = $this->Recipe->Recipe->find('list');
+		$recipes = $this->Recipe->OriginalRecipe->find('list');
 		$this->set(compact('users', 'recipes'));
+
+		$this->render('form');
 	}
 
 /**
@@ -72,10 +74,15 @@ class RecipesController extends AppController {
 			}
 		} else {
 			$this->request->data = $this->Recipe->read(null, $id);
+			$this->request->data = $this->data = $this->Recipe->afterFind($this->data);
+//			debug($this->data);
 		}
+
 		$users = $this->Recipe->User->find('list');
-		$recipes = $this->Recipe->Recipe->find('list');
-		$this->set(compact('users', 'recipes'));
+		$recipes = $this->Recipe->OriginalRecipe->find('list');
+		$measures = $this->Recipe->Ingredient->actsAs['Enum']['measure'];
+		$this->set(compact('users', 'recipes', 'measures'));
+		$this->render('form');
 	}
 
 /**

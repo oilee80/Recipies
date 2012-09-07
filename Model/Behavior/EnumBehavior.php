@@ -8,7 +8,8 @@
  * );
  */
 class EnumBehavior extends ModelBehavior {
-	var $_defaults = array(
+
+	public $_defaults = array(
 	);
 
     function setup(&$Model, $config = array()) {
@@ -20,6 +21,7 @@ class EnumBehavior extends ModelBehavior {
 	}
 
 	function afterFind(&$Model, $results, $primary) {
+
 		extract($this->settings[$Model->alias]);
 
 		if(empty($results)) {

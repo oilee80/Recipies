@@ -2,33 +2,29 @@
 	<h2><?php echo __('Recipes');?></h2>
 	<table cellpadding="0" cellspacing="0">
 	<tr>
-			<th><?php echo $this->Paginator->sort('id');?></th>
 			<th><?php echo $this->Paginator->sort('title');?></th>
 			<th><?php echo $this->Paginator->sort('description');?></th>
 			<th><?php echo $this->Paginator->sort('user_id');?></th>
 			<th><?php echo $this->Paginator->sort('recipe_id');?></th>
-			<th><?php echo $this->Paginator->sort('fork_date');?></th>
-			<th><?php echo $this->Paginator->sort('servings');?></th>
+			<th><?php echo _('Pro Points');?></th>
 			<th><?php echo $this->Paginator->sort('created');?></th>
-			<th><?php echo $this->Paginator->sort('modified');?></th>
 			<th class="actions"><?php echo __('Actions');?></th>
 	</tr>
 	<?php
-	foreach ($recipes as $recipe): ?>
+	foreach ($recipes as $recipe):?>
 	<tr>
-		<td><?php echo h($recipe['Recipe']['id']); ?>&nbsp;</td>
 		<td><?php echo h($recipe['Recipe']['title']); ?>&nbsp;</td>
 		<td><?php echo h($recipe['Recipe']['description']); ?>&nbsp;</td>
 		<td>
-			<?php echo $this->Html->link($recipe['User']['id'], array('controller' => 'users', 'action' => 'view', $recipe['User']['id'])); ?>
+			<?php echo $this->Html->link($recipe['User']['full_name'], array('searchField' => 'user_id', 'searchValue' => $recipe['User']['id'])); ?>
 		</td>
-		<td>
-			<?php echo $this->Html->link($recipe['Recipe']['title'], array('controller' => 'recipes', 'action' => 'view', $recipe['Recipe']['id'])); ?>
-		</td>
-		<td><?php echo h($recipe['Recipe']['fork_date']); ?>&nbsp;</td>
-		<td><?php echo h($recipe['Recipe']['servings']); ?>&nbsp;</td>
+		<td><?php
+			if(!empty($recipe['OriginalRecipe']['id'])) {
+				echo $this->Html->link($recipe['OriginalRecipe']['title'], array('controller' => 'recipes', 'action' => 'view', $recipe['OriginalRecipe']['id']));
+			}
+		?></td>
+		<td><?php echo h($recipe['Recipe']['pro_points']); ?>&nbsp;</td>
 		<td><?php echo h($recipe['Recipe']['created']); ?>&nbsp;</td>
-		<td><?php echo h($recipe['Recipe']['modified']); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $recipe['Recipe']['id'])); ?>
 			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $recipe['Recipe']['id'])); ?>

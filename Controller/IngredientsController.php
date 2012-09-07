@@ -7,6 +7,34 @@ App::uses('AppController', 'Controller');
  */
 class IngredientsController extends AppController {
 
+	public function import() {
+		if($h = fopen(TMP . 'import' . DS . 'ingredients.csv', 'r')) {
+			echo '<table>';
+			while($row = fgetcsv($h)) {
+				if((+$row[1]) == 0)
+					continue;
+				$this->Ingredient->create();
+				$ingredient = array('Ingredient');
+				$ingredient['Ingredient']['name'] = $row[0];
+				$ingredient['Ingredient']['serving_size'] = +$row[1];
+				$ingredient['Ingredient']['fat'] = $row[3] / $row[1];
+				$ingredient['Ingredient']['carbohydrates'] = $row[4] / $row[1];
+				$ingredient['Ingredient']['fiber'] = $row[5] / $row[1];
+				$ingredient['Ingredient']['protein'] = $row[6] / $row[1];
+				$ingredient['Ingredient']['measure'] = 0;
+				$ingredient['Ingredient']['pro_points'] = $row[6];
+				$ingredient['Ingredient']['calculate_pro_points'] = ($row[6] == '');
+
+				if (!$this->Ingredient->save($ingredient, array('' => true))) {
+					echo '<tr><td>'.implode('</td><td>', $ingredient['Ingredient']).'</td></tr>';
+				}
+			}
+			echo '</table>';
+			die('Import Completed');
+		} else {
+			die('Failed Import');
+		}
+	}
 
 /**
  * index method
@@ -16,6 +44,39 @@ class IngredientsController extends AppController {
 	public function index() {
 		$this->Ingredient->recursive = 0;
 		$this->set('ingredients', $this->paginate());
+	}
+
+/**
+ * view method
+ *
+ * @param string $id
+ * @return void
+ */
+	public function search() {
+		$this->Ingredient->recursive = -1;
+/*		$conditions = array(
+			'name LIKE' => '%'.$this->request->query['search'].'%'
+		);*/
+		$searches = explode(' ', $this->request->query['search']);
+		foreach($searches As &$search) {
+			$search = 'name LIKE "%' . $search . '%"';
+		}
+		$conditions = array(
+			'and' => $searches
+		);
+
+		$ingredients = $this->paginate('Ingredient', $conditions);
+
+		$this->set(compact('ingredients'));
+
+/*// Try to change to use Paginate instead so that it will 
+		$limit = ($this->request->params['ext'] == 'json') ? 10 : 25;
+
+		$results = $this->Ingredient->find('list', array('conditions' => $conditions, 'limit' => $limit));
+
+		if($this->request->params['ext'] == 'json') {
+			die(json_encode($results));
+		}*/
 	}
 
 /**

@@ -3,11 +3,15 @@
 	<fieldset>
 		<legend><?php echo __('%s Ingredient', Inflector::humanize($this->view)); ?></legend>
 	<?php
-		echo $this->Form->input('ingredient');
+		echo $this->Form->input('name');
 		echo $this->Form->input('protein');
 		echo $this->Form->input('carbohydrates');
 		echo $this->Form->input('fiber');
 		echo $this->Form->input('fat');
+		echo $this->Form->input('serving_size');
+		echo $this->Form->input('calculate_pro_points');
+		$calculate_pro_points = $this->data['Ingredient']['calculate_pro_points'];
+		echo $this->Form->input('pro_points', array('disabled' => $calculate_pro_points));
 		echo $this->Form->input('type', array('options' => $types, 'empty' => '<Please Select>'));
 		echo $this->Form->input('measure', array('options' => $measures, 'empty' => '<Please Select>'));
 	?>

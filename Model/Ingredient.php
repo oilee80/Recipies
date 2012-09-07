@@ -21,13 +21,19 @@ class Ingredient extends AppModel {
 		)
 	);
 
+
+	public $virtualFields = array(
+		'points_per_serving' => 'pro_points * serving_size'
+	);
+
+
 /**
  * Validation rules
  *
  * @var array
  */
 	public $validate = array(
-		'ingredient' => array(
+		'name' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
 				//'message' => 'Your custom message here',
@@ -72,4 +78,13 @@ class Ingredient extends AppModel {
 		)
 	);
 
+	public function beforeSave($options = array()) {
+		if($this->data['Ingredient']['calculate_pro_points']) {
+			$protein = $this->data['Ingredient']['protein'];
+			$carbs = $this->data['Ingredient']['carbohydrates'];
+			$fat = $this->data['Ingredient']['fat'];
+			$fiber = $this->data['Ingredient']['fiber'];
+			$this->data['Ingredient']['pro_points'] = ( ( 16 * $protein ) + ( 19 * $carbs ) + ( 45 * $fat ) + ( 14 * $fiber ) ) / 175;
+		}
+	}
 }

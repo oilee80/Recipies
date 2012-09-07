@@ -16,14 +16,28 @@ class Recipe extends AppModel {
 		$results = parent::afterFind($results, $primary);
 
 		if(!empty($results['Ingredient'])) {
-			$results['Recipe']['points'] = 0;
+			$results['Recipe']['pro_points'] = 0;
 			foreach($results['Ingredient'] As $ingredient) {
-				$protein = $ingredient['protein'];
-				$carbs = $ingredient['carbohydrates'];
-				$fat = $ingredient['fat'];
-				$fiber = $ingredient['fiber'];
+				$protein = $ingredient['protein'] * $ingredient['RecipeIngredient']['quantity'];
+				$carbs = $ingredient['carbohydrates'] * $ingredient['RecipeIngredient']['quantity'];
+				$fat = $ingredient['fat'] * $ingredient['RecipeIngredient']['quantity'];
+				$fiber = $ingredient['fiber'] * $ingredient['RecipeIngredient']['quantity'];
 
-				$results['Recipe']['pro_points'] += max( round( ( ( 16 * $protein ) + ( 19 * $carbs ) + ( 45 * $fat ) + ( 14 * $fiber ) ) / 175), 0 );
+				$results['Recipe']['pro_points'] += ( ( 16 * $protein ) + ( 19 * $carbs ) + ( 45 * $fat ) + ( 14 * $fiber ) ) / 175;
+			}
+			$results['Recipe']['pro_points'] = max(round($results['Recipe']['pro_points']), 0);
+		} elseif(!empty($results[0]) && !empty($results[0]['Ingredient'])) {
+			foreach($results As &$result) {
+				$result['Recipe']['pro_points'] = 0;
+				foreach($result['Ingredient'] As $ingredient) {
+					$protein = $ingredient['protein'] * $ingredient['RecipeIngredient']['quantity'];
+					$carbs = $ingredient['carbohydrates'] * $ingredient['RecipeIngredient']['quantity'];
+					$fat = $ingredient['fat'] * $ingredient['RecipeIngredient']['quantity'];
+					$fiber = $ingredient['fiber'] * $ingredient['RecipeIngredient']['quantity'];
+
+					$result['Recipe']['pro_points'] += ( ( 16 * $protein ) + ( 19 * $carbs ) + ( 45 * $fat ) + ( 14 * $fiber ) ) / 175;
+				}
+				$result['Recipe']['pro_points'] = max(round($result['Recipe']['pro_points']), 0);
 			}
 		}
 
@@ -70,7 +84,7 @@ class Recipe extends AppModel {
 			'uuid' => array(
 				'rule' => array('uuid'),
 				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
+				'allowEmpty' => true,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations

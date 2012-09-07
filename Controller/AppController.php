@@ -32,4 +32,26 @@ App::uses('Controller', 'Controller');
  * @link http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
+
+	public $components = array('RequestHandler', 'Session');
+
+	public $paginate = array(
+		'limit' => 25
+	);
+
+	public function beforeFilter() {
+// Limit JSON results to 10
+		if(!empty($this->request->params['ext']) && ($this->request->params['ext'] == 'json')) {
+			$this->paginate['limit'] = 10;
+		}
+
+// Enables search from link in related models
+		if(isset($this->request->params['named']['searchField']) && isset($this->request->params['named']['searchValue'])) {
+			$this->paginate = array();
+			$this->paginate['conditions'][$this->modelClass . '.' . $this->request->params['named']['searchField']] = $this->request->params['named']['searchValue'];
+		}
+
+		parent::beforeFilter();
+	}
+
 }

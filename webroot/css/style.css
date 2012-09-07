@@ -1,0 +1,58 @@
+
+
+.inlineSearch {
+	background: #F8F8F8;
+	border: 1px solid #999;
+	color: #333;
+	margin: 33px 0 0 3px;
+	position: absolute;
+/*	width: 190px;*/
+	width: 15em;
+}
+.inlineSearch ul {
+	list-style: none;
+	margin: 0;
+}
+.inlineSearch ul li {
+	margin: 0;
+}
+.inlineSearch .inlineSearchResults {
+	border-bottom: 1px solid #CCC;
+}
+.inlineSearch .inlineSearchResults li {
+	cursor: pointer;
+	padding: 3px 5px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+.inlineSearch .inlineSearchResults li:hover {
+	background: #F0F0F0;
+}
+.inlineSearch .inlineSearchResults li:nth-child(odd) {
+	background: #E8E8E8;
+}
+.inlineSearch .inlineSearchResults li:nth-child(odd):hover {
+	background: #E0E0E0;
+}
+.inlineSearch .inlineSearchPaginator {
+	background: #999;
+	border-collapse: separate;
+	border-spacing: 1px;
+	display: table;
+/*	margin: 0 -1px -1px;*/
+	margin: 0 0 -1px;
+	width: 100%;
+}
+.inlineSearch .inlineSearchPaginator li {
+	background: #F8F8F8;
+	display: table-cell;
+	text-align: center;
+	width: 20%;
+}
+.inlineSearch .inlineSearchPaginator li.first,
+.inlineSearch .inlineSearchPaginator li.prev,
+.inlineSearch .inlineSearchPaginator li.next,
+.inlineSearch .inlineSearchPaginator li.last {
+	cursor: pointer;
+/*	width: 25px;*/
+}

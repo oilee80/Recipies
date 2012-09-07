@@ -2,29 +2,25 @@
 	<h2><?php echo __('Ingredients');?></h2>
 	<table cellpadding="0" cellspacing="0">
 	<tr>
-			<th><?php echo $this->Paginator->sort('ingredient');?></th>
-			<th><?php echo $this->Paginator->sort('protein');?></th>
-			<th><?php echo $this->Paginator->sort('carbohydrates');?></th>
-			<th><?php echo $this->Paginator->sort('fiber');?></th>
-			<th><?php echo $this->Paginator->sort('fat');?></th>
-			<th><?php echo $this->Paginator->sort('created');?></th>
-			<th><?php echo $this->Paginator->sort('modified');?></th>
+			<th><?= $this->Paginator->sort('name');?></th>
+			<th><?= $this->Paginator->sort('pro_points', __('Pro Points per 100'));?></th>
+			<th><?= $this->Paginator->sort('points_per_serving') . ' (' . __('amount') . ')' ?></th>
+			<th><?= $this->Paginator->sort('calculate_pro_points', __('Calculated'));?></th>
+			<th><?= $this->Paginator->sort('measure');?></th>
 			<th class="actions"><?php echo __('Actions');?></th>
 	</tr>
 	<?php
-	foreach ($ingredients as $ingredient): ?>
+	foreach ($ingredients as $ingredient):?>
 	<tr>
-		<td><?php echo h($ingredient['Ingredient']['ingredient']); ?>&nbsp;</td>
-		<td><?php echo h($ingredient['Ingredient']['protein']); ?>&nbsp;</td>
-		<td><?php echo h($ingredient['Ingredient']['carbohydrates']); ?>&nbsp;</td>
-		<td><?php echo h($ingredient['Ingredient']['fiber']); ?>&nbsp;</td>
-		<td><?php echo h($ingredient['Ingredient']['fat']); ?>&nbsp;</td>
-		<td><?php echo h($ingredient['Ingredient']['created']); ?>&nbsp;</td>
-		<td><?php echo h($ingredient['Ingredient']['modified']); ?>&nbsp;</td>
+		<td><?= h($ingredient['Ingredient']['name']); ?>&nbsp;</td>
+		<td><?= h($ingredient['Ingredient']['pro_points'] * 100); ?>&nbsp;</td>
+		<td><?= +$ingredient['Ingredient']['points_per_serving']; ?> (<?= +$ingredient['Ingredient']['serving_size'] ?>)</td>
+		<td><?= ($ingredient['Ingredient']['calculate_pro_points']) ? __('Yes') : __('No'); ?>&nbsp;</td>
+		<td><?= h($ingredient['Ingredient']['measure_text']); ?>&nbsp;</td>
 		<td class="actions">
-			<?php echo $this->Html->link(__('View'), array('action' => 'view', $ingredient['Ingredient']['id'])); ?>
-			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $ingredient['Ingredient']['id'])); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $ingredient['Ingredient']['id']), null, __('Are you sure you want to delete "%s"?', $ingredient['Ingredient']['ingredient'])); ?>
+			<?= $this->Html->link(__('View'), array('action' => 'view', $ingredient['Ingredient']['id'])); ?>
+			<?= $this->Html->link(__('Edit'), array('action' => 'edit', $ingredient['Ingredient']['id'])); ?>
+			<?= $this->Form->postLink(__('Delete'), array('action' => 'delete', $ingredient['Ingredient']['id']), null, __('Are you sure you want to delete "%s"?', $ingredient['Ingredient']['name'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
